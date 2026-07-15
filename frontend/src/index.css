@@ -778,12 +778,173 @@ tr:last-child td {
 .login-footer {
   margin-top: 32px;
   padding-top: 24px;
-  border-top: 1px solid var(--border);
+  border-top: 1px solid var(--border);\
 }
 
 .login-footer p {
   font-size: 12px;
   color: var(--text-muted);
+}
+
+/* ─── Auth mode buttons ─────────────────────────────────────── */
+.login-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--text-muted);
+  font-size: 12px;
+}
+.login-divider::before,
+.login-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.auth-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 13px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: transform 0.18s, border-color 0.18s, background 0.18s;
+  background: transparent;
+  color: var(--text-primary);
+}
+.auth-btn:hover {
+  transform: translateY(-1px);
+  border-color: var(--border-bright);
+  background: var(--bg-card-hover);
+}
+
+.auth-btn--email { border-color: rgba(99,102,241,0.3); }
+.auth-btn--email:hover { border-color: var(--accent); }
+
+.auth-btn--otp { border-color: rgba(6,182,212,0.3); }
+.auth-btn--otp:hover { border-color: var(--accent-3); color: var(--accent-3); }
+
+/* ─── Switch link ───────────────────────────────────────────── */
+.switch-link {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+.switch-link.center { text-align: center; }
+.switch-link button {
+  background: none;
+  border: none;
+  color: var(--accent);
+  cursor: pointer;
+  font-size: inherit;
+  font-weight: 500;
+  padding: 0;
+}
+.switch-link button:hover { text-decoration: underline; }
+
+/* ─── Auth form ─────────────────────────────────────────────── */
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* ─── Password wrapper ──────────────────────────────────────── */
+.pass-wrap {
+  position: relative;
+}
+.pass-wrap .input-field {
+  padding-right: 44px;
+}
+.pass-toggle {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+.pass-toggle:hover { color: var(--text-secondary); }
+
+/* ─── Full-width btn ────────────────────────────────────────── */
+.full-width { width: 100%; justify-content: center; }
+
+/* ─── OTP ───────────────────────────────────────────────────── */
+.otp-back-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 13px;
+  cursor: pointer;
+  padding: 0;
+  margin-bottom: 4px;
+  transition: color 0.15s;
+}
+.otp-back-btn:hover { color: var(--text-primary); }
+
+.otp-hint {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-bottom: 4px;
+}
+.otp-input {
+  letter-spacing: 0.25em;
+  font-size: 22px;
+  text-align: center;
+  font-weight: 600;
+}
+
+/* ─── Guest section ─────────────────────────────────────────── */
+.guest-section {
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.guest-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 11px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.guest-divider::before,
+.guest-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.auth-btn--guest {
+  border-color: rgba(16, 185, 129, 0.25);
+  color: var(--success);
+}
+.auth-btn--guest:hover {
+  border-color: var(--success);
+  background: rgba(16, 185, 129, 0.06);
+}
+
+.guest-note {
+  font-size: 11px;
+  color: var(--text-muted);
+  text-align: center;
 }
 
 /* =========  RESPONSIVE  ========= */

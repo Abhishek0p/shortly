@@ -9,14 +9,12 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Get initial session
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
       setUser(session?.user ?? null);
       setLoading(false);
     });
 
-    // Listen for auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
       setUser(session?.user ?? null);
@@ -26,15 +24,60 @@ export function AuthProvider({ children }) {
     return () => subscription.unsubscribe();
   }, []);
 
+  // ─── Google OAuth ────────────────────────────────────────────────────────────
   const signInWithGoogle = async () => {
     const redirectTo = import.meta.env.VITE_FRONTEND_URL || window.location.origin;
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
-      options: {
-        redirectTo,
-      }
+      options: { redirectTo },
     });
     if (error) throw error;
+  };
+
+  // ─── Email signup (sends OTP) ────────────────────────────────────────────────
+  const signUpWithEmail = async (email, password) => {
+    const { data, error } = await supabase.auth.signUp({ email, password });
+    if (error) throw error;
+    return data;
+  };
+
+  // ─── Email login (password) ──────────────────────────────────────────────────
+  const signInWithEmail = async (email, password) => {
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+    if (error) throw error;
+    return data;
+  };
+
+  // ─── OTP login (passwordless magic link / OTP) ───────────────────────────────
+  const signInWithOtp = async (email) => {
+    const { error } = await supabase.auth.signInWithOtp({
+      email,
+      options: { shouldCreateUser: true },
+    });
+    if (error) throw error;
+  };
+
+  // ─── Verify OTP token ────────────────────────────────────────────────────────
+  const verifyOtp = async (email, token) => {
+    const { data, error } = await supabase.auth.verifyOtp({
+      email,
+      token,
+      type: 'email',
+    });
+    if (error) throw error;
+    return data;
+  };
+
+  // ─── Guest login (anonymous-style: fixed email + password) ───────────────────
+  const signInAsGuest = async () => {
+    const guestEmail = 'guest-demo@shortly.app';
+    const guestPassword = 'GuestDemo#2024!';
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: guestEmail,
+      password: guestPassword,
+    });
+    if (error) throw error;
+    return data;
   };
 
   const signOut = async () => {
@@ -47,7 +90,12 @@ export function AuthProvider({ children }) {
     user,
     loading,
     signInWithGoogle,
-    signOut
+    signUpWithEmail,
+    signInWithEmail,
+    signInWithOtp,
+    verifyOtp,
+    signInAsGuest,
+    signOut,
   };
 
   return (
