@@ -27,10 +27,20 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
+# Build allowed origins list — covers localhost dev, Vercel, and Render preview deployments
+allowed_origins = [
+    "http://localhost:5173",
+    "http://localhost:3000",
+]
+# Add the configured frontend URL if set (e.g. https://shortly-abc.vercel.app)
+if settings.frontend_url and "localhost" not in settings.frontend_url:
+    allowed_origins.append(settings.frontend_url)
+
 # CORS — allow React frontend
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[settings.frontend_url, "http://localhost:3000", "http://localhost:5173"],
+    allow_origins=allowed_origins,
+    allow_origin_regex=r"https://.+\.(vercel\.app|onrender\.com)",  # covers preview deploys too
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
