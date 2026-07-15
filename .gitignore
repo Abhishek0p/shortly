@@ -1,0 +1,25 @@
+# Environments
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+.env.*
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+env/
+.venv/
+
+# Node/React
+node_modules/
+dist/
+build/
+.npm/
+
+# OS/Misc
+.DS_Store
+*.log
