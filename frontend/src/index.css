@@ -947,6 +947,77 @@ tr:last-child td {
   text-align: center;
 }
 
+/* ─── Credentials reveal toggle ─────────────────────────────── */
+.creds-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 12px;
+  cursor: pointer;
+  width: 100%;
+  padding: 4px 0;
+  transition: color 0.15s;
+}
+.creds-toggle:hover { color: var(--text-secondary); }
+
+.creds-box {
+  background: rgba(99,102,241,0.06);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  animation: fadeIn 0.2s ease;
+}
+.cred-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.cred-label {
+  font-size: 11px;
+  color: var(--text-muted);
+  width: 60px;
+  flex-shrink: 0;
+}
+.cred-val {
+  flex: 1;
+  font-size: 12px;
+  color: var(--accent);
+  background: rgba(99,102,241,0.1);
+  border-radius: 4px;
+  padding: 3px 7px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.cred-copy {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 4px;
+  border-radius: 4px;
+  transition: color 0.15s, background 0.15s;
+}
+.cred-copy:hover { color: var(--accent); background: rgba(99,102,241,0.1); }
+
+.creds-hint {
+  font-size: 11px;
+  color: var(--text-muted);
+  line-height: 1.5;
+  border-top: 1px solid var(--border);
+  padding-top: 8px;
+  margin-top: 4px;
+}
+
 /* =========  RESPONSIVE  ========= */
 @media (max-width: 900px) {
   .sidebar {

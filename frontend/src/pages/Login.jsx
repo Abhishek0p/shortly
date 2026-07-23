@@ -1,8 +1,11 @@
 import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { Navigate } from 'react-router-dom';
-import { Link2, Mail, Lock, Eye, EyeOff, ArrowLeft, Zap, UserCheck } from 'lucide-react';
+import { Link2, Mail, Lock, Eye, EyeOff, ArrowLeft, Zap, UserCheck, ChevronDown, ChevronUp, Copy } from 'lucide-react';
 import toast from 'react-hot-toast';
+
+const GUEST_EMAIL = 'guest-demo@shortly.app';
+const GUEST_PASS  = 'GuestDemo#2026';
 
 // ─── Modes ──────────────────────────────────────────────────────────────────────
 // 'home'    : main login page (Google / Email / OTP tabs)
@@ -12,13 +15,14 @@ import toast from 'react-hot-toast';
 
 export default function Login() {
   const { user, signInWithGoogle, signUpWithEmail, signInWithEmail, signInWithOtp, verifyOtp, signInAsGuest } = useAuth();
-  const [mode, setMode]           = useState('home'); // 'home' | 'signup' | 'emailLogin' | 'otp' | 'otpVerify'
+  const [mode, setMode]           = useState('home');
   const [email, setEmail]         = useState('');
   const [password, setPassword]   = useState('');
   const [confirmPass, setConfirm] = useState('');
   const [otp, setOtp]             = useState('');
   const [showPass, setShowPass]   = useState(false);
   const [busy, setBusy]           = useState(false);
+  const [showCreds, setShowCreds] = useState(false);
 
   if (user) return <Navigate to="/" replace />;
 
@@ -134,14 +138,45 @@ export default function Login() {
               </p>
             </div>
 
-            {/* Guest login */}
+            {/* Guest login — reveal credentials panel */}
             <div className="guest-section">
               <div className="guest-divider"><span>For recruiters / demo</span></div>
+
+              {/* One-click auto-login */}
               <button className="auth-btn auth-btn--guest" onClick={handleGuest} disabled={busy}>
                 <UserCheck size={16} />
-                {busy ? 'Logging in...' : 'Continue as Guest'}
+                {busy ? 'Logging in…' : '⚡ One-Click Guest Access'}
               </button>
-              <p className="guest-note">One‑click demo access · no sign‑up needed</p>
+
+              {/* Toggle to reveal credentials */}
+              <button
+                type="button"
+                className="creds-toggle"
+                onClick={() => setShowCreds(v => !v)}
+              >
+                {showCreds ? <ChevronUp size={13} /> : <ChevronDown size={13} />}
+                {showCreds ? 'Hide' : 'View'} guest credentials
+              </button>
+
+              {showCreds && (
+                <div className="creds-box">
+                  <div className="cred-row">
+                    <span className="cred-label">Email</span>
+                    <code className="cred-val">{GUEST_EMAIL}</code>
+                    <button type="button" className="cred-copy" title="Copy" onClick={() => { navigator.clipboard.writeText(GUEST_EMAIL); toast.success('Email copied!'); }}>
+                      <Copy size={12} />
+                    </button>
+                  </div>
+                  <div className="cred-row">
+                    <span className="cred-label">Password</span>
+                    <code className="cred-val">{GUEST_PASS}</code>
+                    <button type="button" className="cred-copy" title="Copy" onClick={() => { navigator.clipboard.writeText(GUEST_PASS); toast.success('Password copied!'); }}>
+                      <Copy size={12} />
+                    </button>
+                  </div>
+                  <p className="creds-hint">Use these credentials on the Email &amp; Password login option, or just click ⚡ above.</p>
+                </div>
+              )}
             </div>
           </>
         )}

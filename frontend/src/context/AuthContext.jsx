@@ -71,7 +71,7 @@ export function AuthProvider({ children }) {
   // ─── Guest login (anonymous-style: fixed email + password) ───────────────────
   const signInAsGuest = async () => {
     const guestEmail = 'guest-demo@shortly.app';
-    const guestPassword = 'GuestDemo#2024!';
+    const guestPassword = 'GuestDemo#2026';
     const { data, error } = await supabase.auth.signInWithPassword({
       email: guestEmail,
       password: guestPassword,

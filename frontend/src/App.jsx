@@ -5,13 +5,14 @@ import Home from './pages/Home';
 import Links from './pages/Links';
 import Analytics from './pages/Analytics';
 import Login from './pages/Login';
+import Redirect from './pages/Redirect';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import './index.css';
 
 function PrivateRoute({ children }) {
   const { user, loading } = useAuth();
   
-  if (loading) return null; // Or a loading spinner
+  if (loading) return null;
   if (!user) return <Navigate to="/login" replace />;
   
   return children;
@@ -33,6 +34,8 @@ export default function App() {
           }}
         />
         <Routes>
+          {/* Public: short-link redirect — must be before the catch-all */}
+          <Route path="/r/:code" element={<Redirect />} />
           <Route path="/login" element={<Login />} />
           <Route 
             path="/*" 

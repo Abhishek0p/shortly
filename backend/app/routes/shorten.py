@@ -9,8 +9,9 @@ from app.database import get_db
 from app.cache import cache_get, cache_set, cache_delete, check_rate_limit
 from app.models import ShortenRequest, ShortenResponse
 from app.config import settings
-from app.auth import get_current_user
+from app.auth import get_current_user, get_optional_current_user
 from fastapi import Depends
+from typing import Optional
 
 router = APIRouter()
 
@@ -22,7 +23,7 @@ def generate_code(length: int = 6) -> str:
 async def shorten_url(
     body: ShortenRequest,
     request: Request,
-    user_id: str = Depends(get_current_user),
+    user_id: Optional[str] = Depends(get_optional_current_user),
 ):
     ip = request.client.host
 
@@ -64,7 +65,7 @@ async def shorten_url(
     }
     await db.links.insert_one(doc)
 
-    short_url = f"{settings.base_url}/{code}"
+    short_url = f"{settings.frontend_url}/r/{code}"
 
     # Cache it
     await cache_set(f"url:{code}", body.url, ttl=86400)
@@ -93,7 +94,7 @@ async def get_all_links(request: Request, skip: int = 0, limit: int = 20, user_i
             link["created_at"] = link["created_at"].isoformat()
         if link.get("expires_at"):
             link["expires_at"] = link["expires_at"].isoformat()
-        link["short_url"] = f"{settings.base_url}/{link['code']}"
+        link["short_url"] = f"{settings.frontend_url}/r/{link['code']}"
 
     return {"links": links, "total": total, "skip": skip, "limit": limit}
 
